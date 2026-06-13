@@ -75,7 +75,7 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <div style="width: 45px; height: 45px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                                         @if($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" width="45" height="45" style="border-radius: 10px; object-fit: cover;">
+                                            <img src="{{ asset('products/' . $product->image) }}" width="45" height="45" style="border-radius: 10px; object-fit: cover;">
                                         @else
                                             <i class="fas fa-box text-muted"></i>
                                         @endif

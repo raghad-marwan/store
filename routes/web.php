@@ -119,3 +119,10 @@ Route::get('/run-seeder', function () {
         return 'حدث خطأ: ' . $e->getMessage();
     }
 });
+
+
+
+Route::get('/link-storage', function () {
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    return 'تم ربط مجلد الصور بنجاح!';
+});
