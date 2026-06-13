@@ -8,7 +8,7 @@
         {{-- صورة المنتج ومعلوماته --}}
         <div class="col-md-6" style="position: relative;">
             @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" style="width: 100%; border-radius: 20px; object-fit: cover;">
+                <img src="{{ asset('products/' . $product->image) }}" style="width: 100%; border-radius: 20px; object-fit: cover;">
             @else
                 <div style="width: 100%; height: 400px; background: #f1f5f9; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
                     <i class="fas fa-box" style="font-size: 80px; color: #94a3b8;"></i>

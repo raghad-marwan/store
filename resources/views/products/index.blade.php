@@ -55,7 +55,7 @@
             {{-- ✅ الصورة والاسم روابط لصفحة التفاصيل --}}
             <a href="{{ route('products.show', $product->slug) }}" style="text-decoration: none; color: inherit;">
                 @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; cursor: pointer;">
+                    <img src="{{ asset('products/' . $product->image) }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; cursor: pointer;">
                 @else
                     <div style="width: 150px; height: 150px; background: #f1f5f9; border-radius: 12px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <i class="fas fa-box" style="font-size: 50px; color: #94a3b8;"></i>
