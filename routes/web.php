@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Artisan;
 
 //  الصفحة الرئيسية
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -110,10 +110,29 @@ Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->n
 
 
 
+Route::get('/run-seeder', function () {
+    try {
+        // تشغيل الميجريشن والسينج برمجياً
+        Artisan::call('migrate:fresh', ['--seed' => true]);
+        return 'تم بناء الجداول وضخ المنتجات بنجاح بفضل الله!';
+    } catch (\Exception $e) {
+        return 'حدث خطأ: ' . $e->getMessage();
+    }
+});
 
 
 
-Route::get('/link-storage', function () {
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-    return 'تم ربط مجلد الصور بنجاح!';
+Route::get('/force-cleanup', function () {
+    try {
+        $dir = public_path('products');
+        if (file_exists($dir)) {
+            // استخدام أمر النظام لحذف المجلد الفعلي بكل ما فيه
+            array_map('unlink', glob("$dir/*.*"));
+            rmdir($dir);
+            return 'تم حذف المجلد المتعارض من السيرفر بنجاح قاطع!';
+        }
+        return 'المجلد غير موجود بالفعل، السيرفر نظيف.';
+    } catch (\Exception $e) {
+        return 'حدث خطأ أثناء الحذف: ' . $e->getMessage();
+    }
 });
