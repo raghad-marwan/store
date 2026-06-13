@@ -10,9 +10,6 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // حذف المنتجات القديمة أولاً (اختياري)
-        // Product::truncate();
-
         $products = [
             // ========================================
             // 📱 جوالات - Smartphones (10 منتجات)
@@ -239,11 +236,23 @@ class ProductSeeder extends Seeder
             ],
         ];
 
+        // مصفوفة روابط صور حقيقية ومباشرة من الإنترنت لكل فئة
+        $categoryImages = [
+            'smartphones' => 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=60',
+            'laptops'     => 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=60',
+            'tablets'     => 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&auto=format&fit=crop&q=60',
+            'smart-home'  => 'https://images.unsplash.com/photo-1558002038-1055907df827?w=500&auto=format&fit=crop&q=60',
+            'accessories' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60',
+        ];
+
         foreach ($products as $product) {
             // ✅ تخطي المنتج إذا كان موجوداً مسبقاً بنفس الاسم
             if (Product::where('name', $product['name'])->exists()) {
                 continue;
             }
+
+            // إعطاء رابط الصورة المناسب بناءً على القسم (Category)
+            $product['image'] = $categoryImages[$product['category']] ?? 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500';
 
             $product['slug'] = Str::slug($product['name']);
 
@@ -258,6 +267,6 @@ class ProductSeeder extends Seeder
             Product::create($product);
         }
 
-        $this->command->info('✅ تم إضافة المنتجات الجديدة بنجاح');
+        $this->command->info('✅ تم إضافة المنتجات الجديدة بنجاح مع الصور');
     }
 }
