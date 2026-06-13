@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 //  الصفحة الرئيسية
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -104,3 +105,17 @@ use App\Http\Controllers\WishlistController;
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index')->middleware('auth');
 Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle')->middleware('auth');
 Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->name('wishlist.destroy')->middleware('auth');
+
+
+
+
+
+Route::get('/run-seeder', function () {
+    try {
+        // تشغيل الميجريشن والسينج برمجياً
+        Artisan::call('migrate:fresh', ['--seed' => true]);
+        return 'تم بناء الجداول وضخ المنتجات بنجاح بفضل الله!';
+    } catch (\Exception $e) {
+        return 'حدث خطأ: ' . $e->getMessage();
+    }
+});
