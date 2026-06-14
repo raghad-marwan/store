@@ -75,9 +75,12 @@ Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])-
 
 
 //  صفحة المنتجات
-Route::get('/products', [ShopController::class, 'index'])->name('products.index');
-Route::get('/product/{slug}', [ShopController::class, 'show'])->name('products.show');
 
+
+
+//  صفحة المنتجات (تم تعديل المسار لتفادي تعارض الخادم)
+Route::get('/all-products', [ShopController::class, 'index'])->name('products.index');
+Route::get('/product/{slug}', [ShopController::class, 'show'])->name('products.show');
 //  تقييم المنتجات
 
 Route::post('/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
