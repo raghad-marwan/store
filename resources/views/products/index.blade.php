@@ -67,15 +67,22 @@
                     <a href="{{ route('products.show', $product->slug) }}" style="text-decoration: none; color: inherit;">
                         @if ($product->image)
                             @if (str_starts_with($product->image, 'http'))
-                                <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                                    style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;">
+                                @php
+                                    // تنظيف اسم المنتج وتحويله لكلمات مفتاحية متوافقة مع الروابط
+                                    $keyword = urlencode($product->name);
+                                    $dynamicImage =
+                                        'https://source.unsplash.com/featured/500x500?phone,tech,' . $keyword;
+                                @endphp
+                                <img src="{{ $dynamicImage }}" alt="{{ $product->name }}"
+                                    style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;"
+                                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500';">
                             @else
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;"
-                                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500';">
+                                    onerror="this.onerror=null; this.src='https://source.unsplash.com/featured/500x500?tech,smartphone';">
                             @endif
                         @else
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"
+                            <img src="https://source.unsplash.com/featured/500x500?electronics,{{ urlencode($product->name) }}"
                                 alt="Default Product"
                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;">
                         @endif
