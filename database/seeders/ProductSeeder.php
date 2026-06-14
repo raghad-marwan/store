@@ -252,7 +252,7 @@ class ProductSeeder extends Seeder
             }
 
             // إعطاء رابط الصورة المناسب بناءً على القسم (Category)
-            $product['image'] = $categoryImages[$product['category']] ?? 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500';
+            $product['image'] = $categoryImages[$product['category']] ?? 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80';
 
             $product['slug'] = Str::slug($product['name']);
 
