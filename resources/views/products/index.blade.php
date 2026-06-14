@@ -68,21 +68,44 @@
                         @if ($product->image)
                             @if (str_starts_with($product->image, 'http'))
                                 @php
-                                    // تنظيف اسم المنتج وتحويله لكلمات مفتاحية متوافقة مع الروابط
+                                    // تنظيف اسم المنتج لاستخدامه في البحث داخل Unsplash
                                     $keyword = urlencode($product->name);
                                     $dynamicImage =
-                                        'https://source.unsplash.com/featured/500x500?phone,tech,' . $keyword;
+                                        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80'; // رابط احتياطي أساسي
+
+                                    // تحديد تصنيف الصورة بناءً على الكلمات المفتاحية
+                                    if (
+                                        str_contains(strtolower($product->name), 'laptop') ||
+                                        str_contains($product->name, 'لابتوب')
+                                    ) {
+                                        $dynamicImage =
+                                            'https://images.unsplash.com/photo-1496181130204-755241524eab?w=500&q=80';
+                                    } elseif (
+                                        str_contains(strtolower($product->name), 'iphone') ||
+                                        str_contains(strtolower($product->name), 'pixel') ||
+                                        str_contains(strtolower($product->name), 'galaxy') ||
+                                        str_contains($product->name, 'جوال')
+                                    ) {
+                                        // استخدام روابط صور هواتف ذكية مختلفة لتجنب التكرار التام
+                                        $phoneImages = [
+                                            'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500',
+                                            'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500',
+                                            'https://images.unsplash.com/photo-1565849511593-ed3de330144f?w=500',
+                                            'https://images.unsplash.com/photo-1573148195900-7845dcb9b127?w=500',
+                                        ];
+                                        // اختيار صورة شبه عشوائية ثابتة لكل منتج بناءً على طول اسمه لضمان عدم تغيرها عند تحديث الصفحة
+                                        $dynamicImage = $phoneImages[strlen($product->name) % count($phoneImages)];
+                                    }
                                 @endphp
                                 <img src="{{ $dynamicImage }}" alt="{{ $product->name }}"
-                                    style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;"
-                                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500';">
+                                    style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;">
                             @else
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;"
-                                    onerror="this.onerror=null; this.src='https://source.unsplash.com/featured/500x500?tech,smartphone';">
+                                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500';">
                             @endif
                         @else
-                            <img src="https://source.unsplash.com/featured/500x500?electronics,{{ urlencode($product->name) }}"
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"
                                 alt="Default Product"
                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;">
                         @endif
